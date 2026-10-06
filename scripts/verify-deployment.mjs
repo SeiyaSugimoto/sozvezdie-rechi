@@ -10,7 +10,7 @@ const check=async path=>{
  assert.equal(response.status,200,`${path} returned ${response.status}; check deployment protection and build logs.`);
  return {response,body:await response.text()};
 };
-const routes=['/','/services','/specialists','/about','/reviews','/vacancies','/contacts'];
+const routes=['/','/services','/specialists','/about','/gallery','/reviews','/vacancies','/contacts'];
 for(const path of routes){
  const {response,body}=await check(path);
  assert(/<html[^>]*lang="ru"/.test(body),`${path}: Russian language missing.`);
@@ -30,7 +30,7 @@ const {body:robots}=await check('/robots.txt');
 assert(/Sitemap: https:\/\//.test(robots),'Production sitemap entry missing.');
 assert(!/Disallow: \/\s/.test(robots+'\n'),'Production robots blocks indexing.');
 const {body:sitemap}=await check('/sitemap.xml');
-assert.equal((sitemap.match(/<loc>/g)||[]).length,7,'Expected seven sitemap URLs.');
+assert.equal((sitemap.match(/<loc>/g)||[]).length,8,'Expected eight sitemap URLs.');
 for(const match of sitemap.matchAll(/<loc>([^<]+)<\/loc>/g))assert.equal(new URL(match[1]).origin,expectedOrigin.origin,'Wrong sitemap domain.');
 const {body:home}=await check('/');
 assert(!home.includes('fonts.googleapis.com')&&!home.includes('fonts.gstatic.com'),'External font dependency found.');

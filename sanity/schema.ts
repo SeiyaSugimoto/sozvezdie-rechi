@@ -13,5 +13,13 @@ defineType({name:'review',title:'Отзывы',type:'document',fields:[text('nam
 defineType({name:'vacancy',title:'Вакансии',type:'document',fields:[text('title','Название вакансии'),text('description','Описание',true),list('requirements','Требования'),flag('active','Активна'),order]}),
 defineType({name:'about',title:'О центре',type:'document',fields:[text('title','Заголовок'),text('history','История центра',true),text('mission','Миссия',true),list('values','Ценности'),text('description','Описание',true),photo('photo','Фото центра'),photo('heroPhoto','Главное фото на главной странице'),photoArray('gallery','Галерея центра'),text('subscriptions','Абонементы',true)]}),
 defineType({name:'contacts',title:'Контакты',type:'document',fields:[text('phone','Телефон'),text('address','Адрес',true),defineField({name:'vk',title:'ВКонтакте',type:'url',validation:r=>r.uri({scheme:['https']})}),defineField({name:'max',title:'МАКС',type:'url',validation:r=>r.uri({scheme:['https']})}),text('hours','Часы работы'),text('bookingText','Текст о записи',true),defineField({name:'mapEmbedUrl',title:'Яндекс Карты — ссылка для встраивания',type:'url',description:'Ссылка вида https://yandex.ru/map-widget/... из кода «Поделиться → Вставить на сайт».',validation:r=>r.custom(value=>!value||/^https:\/\/yandex\.(ru|com)\/map-widget\//.test(value)?true:'Укажите ссылку Яндекс Карт для встраивания')})]}),
-defineType({name:'galleryItem',title:'Галерея',type:'document',fields:[photo('photo','Фото'),text('caption','Подпись'),order],preview:{select:{title:'caption',media:'photo'}}})
+defineType({name:'galleryItem',title:'Галерея',type:'document',fields:[
+ defineField({name:'image',title:'Фотография',type:'image',options:{hotspot:true},fields:photoFields,validation:r=>r.required(),description:'Перетащите фотографию сюда или нажмите «Загрузить». Настройте кадрирование и важную область, чтобы лица оставались в кадре.'}),
+ defineField({name:'title',title:'Название',type:'string',validation:r=>r.required().max(120)}),
+ text('caption','Подпись',true),
+ defineField({name:'alt',title:'Описание для доступности',type:'string',description:'Кратко опишите, что изображено на фотографии.',validation:r=>r.required().max(300)}),
+ defineField({name:'category',title:'Категория',type:'string',options:{list:['Центр','Занятия','Творчество','Специалисты','События','Другое']}}),
+ defineField({name:'order',title:'Порядок отображения',type:'number',initialValue:0,validation:r=>r.required().integer().min(0),description:'Меньшее число — выше в галерее. Например: 10, 20, 30.'}),
+ flag('published','Показывать на сайте')
+ ],orderings:[{title:'По порядку',name:'galleryOrder',by:[{field:'order',direction:'asc'},{field:'_createdAt',direction:'desc'}]}],preview:{select:{title:'title',subtitle:'category',media:'image',published:'published'},prepare({title,subtitle,media,published}){return {title:title||'Без названия',subtitle:published?subtitle:'Не показывается на сайте',media};}}})
 ];

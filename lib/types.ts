@@ -1,9 +1,9 @@
-export type Photo={url?:string;alt?:string;localPath?:string};
+export type Photo={url?:string;alt?:string;position?:string;localPath?:string};
 export type Service={_id:string;slug:string;title:string;shortDescription:string;description:string;photo?:Photo;icon:string;age:string;duration:number;price?:number;showPrice:boolean;format:string;order:number;active:boolean};
 export type Specialist={_id:string;firstName:string;lastName:string;photo?:Photo;position:string;specialization:string;experience:string;education:string;qualification:string;about:string;directions:string[];certificates?:Photo[];diplomas?:Photo[];order:number;visible:boolean;isDemo:boolean};
 export type Review={_id:string;name:string;text:string;photo?:Photo;date?:string;order:number;visible:boolean;isDemo:boolean};
 export type Vacancy={_id:string;title:string;description:string;requirements:string[];active:boolean;order:number};
-export type GalleryItem={_id:string;photo:Photo;caption:string;order:number};
+export type GalleryItem={_id:string;image:Photo;title:string;caption:string;alt:string;category?:string;order:number;published:boolean};
 export type Contacts={phone:string;address:string;vk?:string;max?:string;hours:string;bookingText:string;mapEmbedUrl?:string};
 export type About={title:string;history:string;mission:string;values:string[];description:string;photo?:Photo;heroPhoto?:Photo;gallery?:Photo[];subscriptions:string};
 export type Content={services:Service[];specialists:Specialist[];reviews:Review[];vacancies:Vacancy[];gallery:GalleryItem[];contacts:Contacts;about:About};

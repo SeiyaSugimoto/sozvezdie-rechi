@@ -1,3 +1,4 @@
+import {Gallery} from '@/components/Gallery';
 import Link from 'next/link';
 import {getContent,telephone} from '@/lib/content';
 import {BookingCTA,PhotoFrame,SectionHeading,ServiceCard,WhyUs,SpecialistCard,Reviews,CTASection,ContactSection,Values} from '@/components/Content';
@@ -23,6 +24,7 @@ export default async function Home(){
   <section className="wrap section"><SectionHeading eyebrow="Наша команда" title="Люди, которым можно доверять" description="Подход, образование и опыт каждого специалиста — чтобы вам было проще познакомиться." link={['/specialists','О специалистах']}/><div className="specialist-grid">{data.specialists.slice(0,3).map((specialist,i)=><SpecialistCard key={specialist._id} specialist={specialist} index={i}/>)}</div></section>
   <section className="wrap about-section"><figure><PhotoFrame fallback="/images/about-movement.jpg" photo={data.about.photo} alt="Упражнение на координацию с поддержкой специалиста" className="about-photo"/><figcaption>Развитие — это и слова, и движение, и маленькие открытия.</figcaption></figure><div><span className="eyebrow">О центре «Созвездие речи»</span><h2>{data.about.title}</h2><p>{data.about.history}</p><p>{data.about.description}</p><Values values={data.about.values}/><Link href="/about" className="text-link">Подробнее о центре</Link></div></section>
   <section className="wrap section"><SectionHeading eyebrow="Отзывы" title="Что говорят наши семьи" link={['/reviews','Все отзывы']}/><Reviews data={data}/></section>
+  <section className="wrap section home-gallery"><SectionHeading eyebrow="Жизнь центра" title="Галерея" description="Занятия, маленькие открытия и моменты, которые хочется сохранить."/><Gallery items={data.gallery.filter(item=>item.published).slice(0,6)}/><Link className="button gallery-all" href="/gallery">Смотреть все фотографии</Link></section>
   <CTASection contacts={data.contacts}/><ContactSection contacts={data.contacts}/>
  </>;
 }

@@ -10,7 +10,7 @@ export type SanityContent = {
   specialists: (Omit<Specialist,'photo'|'certificates'|'diplomas'> & {photo?:SanityPhoto;certificates?:SanityPhoto[];diplomas?:SanityPhoto[]})[];
   reviews: (Omit<Review,'photo'> & {photo?:SanityPhoto})[];
   vacancies: Vacancy[];
-  gallery: (Omit<GalleryItem,'photo'> & {photo:SanityPhoto})[];
+  gallery: (Omit<GalleryItem,'image'> & {image?:SanityPhoto;photo?:SanityPhoto})[];
   contacts: Contacts | null;
   about: (Omit<About,'photo'|'heroPhoto'|'gallery'> & {photo?:SanityPhoto;heroPhoto?:SanityPhoto;gallery?:SanityPhoto[]}) | null;
 };
