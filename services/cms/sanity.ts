@@ -1,12 +1,13 @@
 import 'server-only';
+import {sanityProjectId,sanityDataset} from '@/lib/cms-config';
 import {createClient} from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
 import type {Content,Photo} from '@/lib/types';
 import type {SanityContent,SanityPhoto} from './types';
 export async function getSanityContent():Promise<Content> {
- const projectId=process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+ const projectId=process.env.NEXT_PUBLIC_SANITY_PROJECT_ID||sanityProjectId;
  if(!projectId) throw new Error('CMS_PROVIDER=sanity requires NEXT_PUBLIC_SANITY_PROJECT_ID.');
- const client=createClient({projectId,dataset:process.env.NEXT_PUBLIC_SANITY_DATASET||'production',apiVersion:process.env.SANITY_API_VERSION||'2026-10-01',useCdn:false,token:process.env.SANITY_API_READ_TOKEN||undefined,perspective:'published',timeout:10000,maxRetries:1});
+ const client=createClient({projectId,dataset:process.env.NEXT_PUBLIC_SANITY_DATASET||sanityDataset,apiVersion:process.env.SANITY_API_VERSION||'2026-10-01',useCdn:false,token:process.env.SANITY_API_READ_TOKEN||undefined,perspective:'published',timeout:10000,maxRetries:1});
  const query=`{"services":*[_type=="service" && active==true]|order(order asc),"specialists":*[_type=="specialist" && visible==true]|order(order asc),"reviews":*[_type=="review" && visible==true]|order(order asc),"vacancies":*[_type=="vacancy" && active==true]|order(order asc),"gallery":*[_type=="galleryItem" && published==true]|order(coalesce(order,0) asc, _createdAt desc, _id asc),"contacts":*[_type=="contacts" && _id=="contacts"][0],"about":*[_type=="about" && _id=="about"][0]}`;
  const raw=await client.fetch<SanityContent>(query,{}, {next:{revalidate:60,tags:['center-content']}});
  if(!raw.contacts?.phone || !raw.contacts?.address || !raw.about?.title) throw new Error('Publish the contacts and about documents in Sanity first (npm run seed).');

@@ -4,16 +4,19 @@
   "private": true,
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0",
-    "build": "next build",
+    "build": "node --env-file-if-exists=.env.local scripts/build-studio.mjs && next build",
     "start": "node scripts/prepare-standalone.mjs && node .next/standalone/server.js",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "seed": "node --env-file=.env.local scripts/seed.mjs",
-    "studio": "node --env-file=.env.local node_modules/.bin/sanity dev",
+    "studio": "node --env-file-if-exists=.env.local node_modules/.bin/sanity dev",
     "studio:deploy": "node --env-file=.env.local node_modules/.bin/sanity deploy",
-    "studio:build": "node --env-file=.env.local node_modules/.bin/sanity build",
+    "studio:build": "node --env-file-if-exists=.env.local scripts/build-studio.mjs",
     "start:standalone": "node scripts/prepare-standalone.mjs && node .next/standalone/server.js",
-    "verify:deployment": "node scripts/verify-deployment.mjs"
+    "verify:deployment": "node scripts/verify-deployment.mjs",
+    "studio:login": "node --env-file-if-exists=.env.local scripts/sanity-cli.mjs login",
+    "seed:login": "node --env-file-if-exists=.env.local scripts/sanity-cli.mjs exec scripts/seed.mjs --with-user-token",
+    "studio:cors": "node --env-file-if-exists=.env.local scripts/sanity-cli.mjs cors add https://sozvezdie-rechi.vercel.app --credentials"
   },
   "dependencies": {
     "@portabletext/react": "^3.2.0",

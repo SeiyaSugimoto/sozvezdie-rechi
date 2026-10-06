@@ -355,3 +355,17 @@ Gitには `node_modules/`、`.next/`、`.env`、`.env.*`、`.sanity/`、`.vercel
 縦横比はグリッドで4:5にそろえ、拡大表示では写真全体を表示します。写真編集画面のHotspot（重要な領域）を顔の位置に合わせると、グリッドの切り抜き位置に反映されます。写真の公開前に、写っている方の掲載同意をセンター内で確認してください。
 
 既存の古いgalleryItemの `photo` フィールドは読み取り互換を残していますが、新規作成は `image` を使います。古いドキュメントは新しいフィールドを入力し、`published` をオンにしてPublishしてから表示されます。
+
+## Sanity 接続先と管理画面（2026-10-06）
+
+接続先は Project ID `m0yruyhq`、Dataset `production`。識別子は秘密情報ではありません。StudioとCMSアダプターの既定値として設定し、環境変数で上書き可能にしています。`npm run build` はStudioを `public/studio` にビルドしてからNext.jsをビルドします。管理画面のURLは **https://sozvezdie-rechi.vercel.app/studio** です。独自ドメイン・VPSへの移行後も `/studio` で配信できます。初回はSanityへのログインとCORS許可が必要です。StudioのHTML/JavaScriptは公開ですが、編集操作にはSanityの認証とプロジェクト権限が必要です。Studioは検索対象から除外しています。
+
+初回セットアップ:
+
+1. プロジェクトフォルダーのターミナルで `npm run studio:login` を実行し、ブラウザーからこのプロジェクトを管理するSanityアカウントでログインします。
+2. `npm run seed:login` で既存サイトの初期データと2枚の写真を登録します。既存ドキュメントは上書きしません。先生・口コミには既存のサンプル表示フラグを引き継ぎます。
+3. `npm run studio:cors` を実行し、確認画面で本番originを許可します。管理画面から行う場合は https://www.sanity.io/manage → 対象プロジェクト → API → CORS Origins → Add CORS origin → `https://sozvezdie-rechi.vercel.app` → Allow credentialsをオン → 保存。URLに `/studio` は付けません。この許可はStudioのログイン済みブラウザー通信のためで、Next.jsサーバーからの読み取りには不要です。
+4. Vercel → Project → Settings → Environment Variablesで `CMS_PROVIDER=sanity`、`NEXT_PUBLIC_SANITY_PROJECT_ID=m0yruyhq`、`NEXT_PUBLIC_SANITY_DATASET=production`、`SANITY_API_VERSION=2026-10-01`、`NEXT_PUBLIC_SITE_URL=https://sozvezdie-rechi.vercel.app` をProductionに設定し、再デプロイします。初期データ登録前は `CMS_PROVIDER=local` を維持します。現時点ではPublic datasetへの匿名読み取りが成功しており、READ_TOKENは不要です。WRITE_TOKEN・ログイントークンはVercelに設定しません。
+5. Studioへ運営者を招待するにはSanity管理画面のMembersから招待し、必要な編集権限を付けます。料金は「Услуги」の各サービス内の「Стоимость, рубли」「Показывать цену」で編集します。
+
+ログイン情報はローカルの `.sanity-cli/` のみに保存し、GitとDockerから除外します。Studioのスキーマは生成済みバンドルに含まれるため編集画面で有効です。Sanity Dashboardへスキーマ/Studio URLを登録する追加CLI操作はログイン後に実行可能です。`studio:deploy` は別のSanityホストへの公開用で、今回の `/studio` 公開には不要です。
