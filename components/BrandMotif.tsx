@@ -8,3 +8,7 @@ export function BrandMark(){
 export function Constellation({className=''}:{className?:string}){
  return <svg className={`constellation ${className}`} viewBox="0 0 320 320" fill="none" aria-hidden="true" focusable="false"><path d="M38 218 112 130 194 162 262 54M112 130 80 40M194 162 270 270" stroke="currentColor" strokeWidth="1"/><g fill="#e1bb60"><path d="m112 117 3.7 9.3 9.3 3.7-9.3 3.7-3.7 9.3-3.7-9.3-9.3-3.7 9.3-3.7Z"/><path d="m262 45 2.6 6.4L271 54l-6.4 2.6-2.6 6.4-2.6-6.4L253 54l6.4-2.6Z"/><path d="m270 262 2.3 5.7 5.7 2.3-5.7 2.3-2.3 5.7-2.3-5.7-5.7-2.3 5.7-2.3Z"/><circle cx="38" cy="218" r="3"/><circle cx="80" cy="40" r="2.5"/><circle cx="194" cy="162" r="3.5"/></g></svg>;
 }
+
+export function HeaderConstellation(){
+ return <svg className="header-constellation" viewBox="0 0 650 130" fill="none" aria-hidden="true" focusable="false"><path d="M25 98 117 35 230 88 370 24 482 94 613 38" stroke="currentColor" strokeWidth="1"/><g fill="#f3d27a"><path d="m117 22 3.8 8.2 9 1.1-6.6 6.2 1.8 8.9-8-4.5-8 4.5 1.8-8.9-6.6-6.2 9-1.1Z"/><path d="m370 14 3 6.5 7 1-5 4.8 1.2 7-6.2-3.5-6.2 3.5 1.2-7-5-4.8 7-1Z"/><path d="m613 28 3 6.5 7 1-5 4.8 1.2 7-6.2-3.5-6.2 3.5 1.2-7-5-4.8 7-1Z"/><circle cx="25" cy="98" r="3"/><circle cx="230" cy="88" r="3"/><circle cx="482" cy="94" r="3"/></g></svg>;
+}
