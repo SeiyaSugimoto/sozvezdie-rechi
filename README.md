@@ -369,3 +369,22 @@ Gitには `node_modules/`、`.next/`、`.env`、`.env.*`、`.sanity/`、`.vercel
 5. Studioへ運営者を招待するにはSanity管理画面のMembersから招待し、必要な編集権限を付けます。料金は「Услуги」の各サービス内の「Стоимость, рубли」「Показывать цену」で編集します。
 
 ログイン情報はローカルの `.sanity-cli/` のみに保存し、GitとDockerから除外します。Studioのスキーマは生成済みバンドルに含まれるため編集画面で有効です。Sanity Dashboardへスキーマ/Studio URLを登録する追加CLI操作はログイン後に実行可能です。`studio:deploy` は別のSanityホストへの公開用で、今回の `/studio` 公開には不要です。
+
+## Sanity Dashboard の埋め込みエラーを解消する（2026-10-06）
+
+`/studio` の直接表示が成功していても、Sanity Dashboardから開くと失敗する場合があります。Studioには `X-Frame-Options: SAMEORIGIN` を付けず、CSPの `frame-ancestors` で自分自身と `https://sanity.io` / `https://*.sanity.io` だけを許可します。その他のサイトページは同一originのみに制限しています。
+
+StudioをManage画面で登録しただけでは、Dashboard用のmanifestとworkspace schemaの登録は完了しません。ブラウザーでのSanityログインとCLIログインも別です。以下をプロジェクトのターミナルで一度実行してください。
+
+```sh
+npm run studio:login
+npm run studio:register
+```
+
+`studio:register` は公式の `sanity deploy --external --url https://sozvezdie-rechi.vercel.app/studio --schema-required` を実行します。Sanityホスティングへ移す操作ではなく、現在のVercel URL・manifest・スキーマを登録する操作です。スキーマ更新後にも実行してください。CLI資格情報は `.sanity-cli/` に保存され、コミットしません。認証前のログイン操作はユーザー自身が行います。
+
+StudioはSanity 6.17.0でビルドします。ビルド時にmanifestを `public/studio/static` にも出力し、存在しないstaticファイルをHTMLに書き換えないルーティングにしています。Dashboardは登録されたmanifestを使うため、静的manifestの公開だけでは代用できません。ビルド済みStudioには公式bridgeスクリプトが含まれます。
+
+CORSは `https://sozvezdie-rechi.vercel.app` のみ、Allow credentialsを有効にします。登録後のチェックで、このoriginに対する `Access-Control-Allow-Origin` と `Access-Control-Allow-Credentials: true` の応答を確認済みです。
+
+公式手順: https://www.sanity.io/docs/dashboard/dashboard-configure

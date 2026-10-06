@@ -16,7 +16,8 @@
     "verify:deployment": "node scripts/verify-deployment.mjs",
     "studio:login": "node --env-file-if-exists=.env.local scripts/sanity-cli.mjs login",
     "seed:login": "node --env-file-if-exists=.env.local scripts/sanity-cli.mjs exec scripts/seed.mjs --with-user-token",
-    "studio:cors": "node --env-file-if-exists=.env.local scripts/sanity-cli.mjs cors add https://sozvezdie-rechi.vercel.app --credentials"
+    "studio:cors": "node --env-file-if-exists=.env.local scripts/sanity-cli.mjs cors add https://sozvezdie-rechi.vercel.app --credentials",
+    "studio:register": "node --env-file-if-exists=.env.local scripts/sanity-cli.mjs deploy --external --url https://sozvezdie-rechi.vercel.app/studio --schema-required"
   },
   "dependencies": {
     "@portabletext/react": "^3.2.0",
@@ -36,7 +37,7 @@
     "@types/react-dom": "^19.0.0",
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.5.0",
-    "sanity": "^4.0.0",
+    "sanity": "^6.17.0",
     "styled-components": "^6.5.3",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.7.0"
