@@ -9,7 +9,7 @@ export default async function Home(){
   <div className="hero-sky"><Constellation className="hero-constellation"/><section className="hero wrap">
    <div className="hero-copy">
     <p className="eyebrow">Солнечногорск · Дети и взрослые</p>
-    <h1>Развиваем речь.<br/>Помогаем учиться.<br/><em>Поддерживаем семью.</em></h1>
+    <h1>Развиваем речь.<br/>Помогаем учиться.<br/>Поддерживаем семью.</h1>
     <p className="hero-description">Логопед, нейропсихолог и детский психолог. Бережные занятия, понятные цели и внимание к тому, что важно именно вам.</p>
     <div className="hero-actions"><BookingCTA contacts={data.contacts} label="Обсудить занятия"/><a className="hero-phone" href={telephone(data.contacts.phone)}>{data.contacts.phone}</a></div>
     <p className="hero-note">Для детей от 2 лет, школьников и взрослых.<br/>Начнём с разговора — подскажем, к кому обратиться.</p>
