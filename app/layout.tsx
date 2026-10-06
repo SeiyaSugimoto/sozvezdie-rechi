@@ -1,5 +1,6 @@
 import type {Metadata} from 'next';
 import './globals.css';
+import './sky-theme.css';
 import localFont from 'next/font/local';
 const manrope=localFont({src:'../public/fonts/Manrope-Variable.ttf',weight:'200 800',display:'swap',fallback:['Arial','sans-serif']});
 import {Header} from '@/components/Header';
