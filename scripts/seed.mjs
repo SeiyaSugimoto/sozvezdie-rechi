@@ -1,0 +1,12 @@
+import {createClient} from '@sanity/client';
+import ts from 'typescript';
+import {readFile} from 'node:fs/promises';
+const source=await readFile(new URL('../lib/data.ts',import.meta.url),'utf8');
+const js=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
+const {demo}=await import(`data:text/javascript;base64,${Buffer.from(js).toString('base64')}`);
+if(!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID||!process.env.SANITY_API_WRITE_TOKEN)throw new Error('Set project ID and write token in .env.local');
+const client=createClient({projectId:process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,dataset:process.env.NEXT_PUBLIC_SANITY_DATASET||'production',apiVersion:process.env.SANITY_API_VERSION||'2026-10-01',useCdn:false,token:process.env.SANITY_API_WRITE_TOKEN});
+let tx=client.transaction();
+for(const [key,type] of Object.entries({services:'service',specialists:'specialist',reviews:'review',vacancies:'vacancy'}))for(const item of demo[key])tx=tx.createIfNotExists({...item,_type:type});
+tx=tx.createIfNotExists({...demo.contacts,_id:'contacts',_type:'contacts'}).createIfNotExists({...demo.about,_id:'about',_type:'about'});
+await tx.commit();console.log('Initial content added. Existing documents were preserved.');
