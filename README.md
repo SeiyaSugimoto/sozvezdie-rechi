@@ -388,3 +388,9 @@ StudioはSanity 6.17.0でビルドします。ビルド時にmanifestを `public
 CORSは `https://sozvezdie-rechi.vercel.app` のみ、Allow credentialsを有効にします。登録後のチェックで、このoriginに対する `Access-Control-Allow-Origin` と `Access-Control-Allow-Credentials: true` の応答を確認済みです。
 
 公式手順: https://www.sanity.io/docs/dashboard/dashboard-configure
+
+### 接続作業の完了状況
+
+Sanity CLIで外部Studio登録と1件のworkspace schemaデプロイが成功しました。登録されたappIdは `gfgdr4rf40pk226tjrzlpzn7`。`sanity.cli.ts` に保存し、以後の登録処理で同じStudioを更新します。既存の12サービス・ギャラリー2枚・センター紹介・連絡先をSanityへ登録し、実データを取得する本番ビルドも成功しています。写真2枚はSanityの画像アセットとしてアップロード済みです。
+
+Vercelに残っている `CMS_PROVIDER=local` は `sanity` へ変更して再デプロイする必要があります。Project → Settings → Environment Variables → CMS_PROVIDER → Edit → Valueを `sanity` → Production（必要ならPreviewも） → Save。再デプロイ後、Gallery画像のHTMLがSanity由来のURLになっていることと全ページを確認します。未変更の間、本番サイトは保存済みコンテンツです。
